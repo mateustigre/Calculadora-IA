@@ -2,12 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-4px); }
-  75% { transform: translateX(4px); }
+@font-face {
+  font-family: 'Artegra Sans';
+  src: url('./fonts/ArtegraSans-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
 }
 
-.animate-shake {
-  animation: shake 0.3s ease;
+@font-face {
+  font-family: 'Artegra Sans';
+  src: url('./fonts/ArtegraSans-Semibold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Artegra Sans';
+  src: url('./fonts/ArtegraSans-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+body {
+  @apply bg-[#26252B] text-white font-artegra;
+    font-family: 'ArtegraSans', sans-serif;
+}
+
+@layer utilities {
+  .font-artegra {
+    font-family: 'ArtegraSans', sans-serif;
+  }
 }

@@ -69,7 +69,6 @@ export default function App() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const newErrors: { [key: string]: boolean } = {};
-
     const custoFinal = formData.custo === 'Outro' ? formData.custoOutro : formData.custo;
 
     if (!formData.funcionarios) newErrors.funcionarios = true;
@@ -79,8 +78,9 @@ export default function App() {
     if (!formData.tempo) newErrors.tempo = true;
     if (!formData.ticketMedio) newErrors.ticketMedio = true;
     if (formData.telefone.replace(/\D/g, '').length !== 11) newErrors.telefone = true;
-    if (!formData.custo ||(formData.custo === 'Outro' && (!formData.custoOutro || formData.custoOutro === 'R$ 0,00'))) 
-      { newErrors.custoOutro = true;}
+    if (formData.custo === 'Outro' && (!formData.custoOutro || formData.custoOutro === 'R$ 0,00')) {
+      newErrors.custoOutro = true;
+    }
 
     if (Object.keys(newErrors).length > 0) {
       console.log('Campos com erro:', newErrors);
@@ -99,36 +99,34 @@ export default function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(dataToSend),
       });
-
-      if (!response.ok) throw new Error('Erro ao enviar o formulário');
-
       navigate('/result');
     } catch (error) {
       console.error(error);
-      console.log(formData);
     }
   };
 
   const getInputClass = (field: string) =>
-    `w-full p-3 rounded-full border ${
+    `w-full p-3 text-black rounded-full border ${
       errors[field] ? 'border-red-500 animate-shake' : 'border-green-500'
     }`;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-green-300 text-white flex flex-col items-center justify-center p-4">
-
-      <div className="md:w-1/2 max-w-lg">
-        <h1 className="text-3xl font-bold leading-tight mb-4">
-          <strong>Preencha o formulário em menos de 1 minuto</strong> e tenha acesso a um diagnóstico estratégico{' '}
-          <span className="text-green-400">totalmente gratuito</span> e 100% personalizado para sua empresa.
+    <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-[#3e0f52] text-white flex flex-col items-center justify-center font-artegra px-4 pt-4">
+      <div className="w-full max-w-4xl">
+        <h1 className="text-center text-3xl md:text-4xl font-bold leading-tight mb-8 max-w-3xl mx-auto">
+          <strong>Descubra quanto sua empresa está perdendo sem automações.</strong>
         </h1>
+        <h2 className="text-center text-2xl md:text-xl font-bold leading-tight mb-8 max-w-3xl mx-auto">
+          <span className="text-green-400">Em 60 segundos</span>, um diagnóstico estratégico e preciso
+          para quem quer escalar com inteligência.
+        </h2>
       </div>
 
       <form
         onSubmit={handleSubmit}
-        className="bg-white text-black rounded-lg p-6 md:w-1/2 max-w-md w-full shadow-md space-y-4 mt-8 md:mt-0"
+        className="bg-[#111111] text-white rounded-lg p-6 md:w-1/2 max-w-md w-full shadow-xl border border-purple-800 space-y-4 mt-8 md:mt-0 mb-6"
       >
-        <h2 className="text-lg font-semibold text-center mb-2 text-gray-800">
+        <h2 className="text-lg font-semibold text-center mb-2 md:text-2xl text-green-400">
           Descubra quanto sua empresa pode economizar com IA e automações
         </h2>
 
@@ -143,7 +141,7 @@ export default function App() {
         />
 
         <div className="space-y-2">
-          <label className="block font-medium">Qual o custo médio mensal de cada funcionário?</label>
+          <label className="block font-medium">Custo médio mensal de cada funcionário:</label>
           {['R$ 2.222,62', 'R$ 3.460,80', 'R$ 4.377,60', 'Outro'].map((opcao) => (
             <label key={opcao} className="flex items-center">
               <input
@@ -152,19 +150,17 @@ export default function App() {
                 value={opcao}
                 checked={formData.custo === opcao}
                 onChange={handleChange}
-                className={`mr-2 ${errors.custo ? 'border-red-500 animate-shake' : ''}`}
+                className={`mr-2 ${errors.custo ? 'border-red-500 animate-shake' : 'border-green-500'}`}
               />
               {opcao === 'Outro' ? 'Outro:' : opcao}
             </label>
           ))}
           {formData.custo === 'Outro' && (
-           <input
+            <input
               type="text"
               name="custoOutro"
               placeholder="Digite o valor"
-              className={`w-full p-3 rounded-full border ${
-                errors.custoOutro ? 'border-red-500 animate-shake' : 'border-green-500'
-              }`}
+              className={getInputClass('custoOutro')}
               value={formData.custoOutro || ''}
               onChange={(e) => {
                 const formatted = formatCurrency(e.target.value);
@@ -190,7 +186,7 @@ export default function App() {
                 name="funcoes"
                 value={func}
                 onChange={handleChange}
-                className={`mr-2 ${errors.funcoes ? 'border-red-500 animate-shake' : ''}`}
+                className={`mr-2 ${errors.funcoes ? 'border-red-500 animate-shake' : 'border-green-500'}`}
               />
               {func}
             </label>
@@ -201,7 +197,7 @@ export default function App() {
               name="funcoes"
               value="outra"
               onChange={handleChange}
-              className={`mr-2 ${errors.funcoes ? 'border-red-500 animate-shake' : ''}`}
+              className={`mr-2 ${errors.funcoes ? 'border-red-500 animate-shake' : 'border-green-500'}`}
             />
             Outras
           </label>
@@ -226,7 +222,7 @@ export default function App() {
                 name="tempo"
                 value={op}
                 onChange={handleChange}
-                className={`mr-2 ${errors.tempo ? 'border-red-500 animate-shake' : ''}`}
+                className={`mr-2 ${errors.tempo ? 'border-red-500 animate-shake' : 'border-green-500'}`}
               />
               {op}
             </label>
@@ -234,7 +230,7 @@ export default function App() {
         </div>
 
         <div className="font-medium flex flex-col gap-2">
-          <h1>Qual seu ticket médio por cliente?</h1>
+          <h1>Ticket médio por cliente</h1>
           <input
             type="text"
             name="ticketMedio"
@@ -251,8 +247,8 @@ export default function App() {
             type="tel"
             name="telefone"
             placeholder="(00) 00000-0000"
-            className={`w-full p-2 rounded border ${
-              errors.telefone ? 'border-red-500 animate-shake' : 'border-gray-300'
+            className={`w-full p-2 text-black rounded border ${
+              errors.telefone ? 'border-red-500 animate-shake' : 'border-green-500'
             }`}
             value={formData.telefone}
             onChange={handleChange}
@@ -266,7 +262,7 @@ export default function App() {
           QUERO CRESCER MINHA EMPRESA
         </button>
 
-        <p className="text-xs text-gray-600 text-center mt-2">
+        <p className="text-xs text-gray-400 text-center mt-2">
           Prometemos não usar suas informações para enviar SPAM. Os dados são tratados conforme a LGPD.
         </p>
       </form>
