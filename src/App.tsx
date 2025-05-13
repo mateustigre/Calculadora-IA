@@ -16,6 +16,8 @@ export default function App() {
 
   const [showOutraFuncao, setShowOutraFuncao] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: boolean }>({});
+  const [isLoading, setIsLoading] = useState(false);
+
 
   const formatCurrency = (value: string) => {
     const numeric = value.replace(/\D/g, '');
@@ -68,6 +70,7 @@ export default function App() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
     const newErrors: { [key: string]: boolean } = {};
     const custoFinal = formData.custo === 'Outro' ? formData.custoOutro : formData.custo;
 
@@ -109,6 +112,32 @@ export default function App() {
     `w-full p-3 text-black rounded-full border ${
       errors[field] ? 'border-red-500 animate-shake' : 'border-green-500'
     }`;
+
+
+if (isLoading) {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-black text-white font-artegra">
+      <div className="flex flex-col items-center">
+        <svg className="animate-spin h-10 w-10 text-green-400 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle
+            className="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            strokeWidth="4"
+          />
+          <path
+            className="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+          />
+        </svg>
+        <p className="text-lg text-green-400 animate-pulse">Enviando dados para análise...</p>
+      </div>
+    </div>
+  );
+}
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-[#3e0f52] text-white flex flex-col items-center justify-center font-artegra px-4 pt-4">
@@ -267,5 +296,6 @@ export default function App() {
         </p>
       </form>
     </div>
+    
   );
 }
