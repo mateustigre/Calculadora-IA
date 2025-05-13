@@ -88,6 +88,7 @@ export default function App() {
     if (Object.keys(newErrors).length > 0) {
       console.log('Campos com erro:', newErrors);
       setErrors(newErrors);
+      setIsLoading(false);
       return;
     }
 
@@ -105,6 +106,7 @@ export default function App() {
       navigate('/result');
     } catch (error) {
       console.error(error);
+      setIsLoading(false)
     }
   };
 
